@@ -1,26 +1,239 @@
+/* app/globals.css */
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* =================================================================
+   0. GAPカスタムフォント定義
+   ================================================================= */
+@font-face {
+  font-family: "GapSans-Regular";
+  src: url("/fonts/GapSans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@font-face {
+  font-family: "GapSans-Bold";
+  src: url("/fonts/GapSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* =================================================================
+   1. DLS デザイントークン定義（Tailwind CSS v4 @theme）
+   ================================================================= */
+@theme {
+  /* --- ブランド＆セマンティックカラー --- */
+  --color-gap-navy: #002554;
+  --color-gap-navy-deep: #001b3d;
+  --color-gap-blue: #0d6efd;
+  --color-gap-red: #dc3545;
+  --color-gap-red-dark: #d00000;
+  --color-gap-dark: #2b2b2b;
+  --color-gap-black: #0b0c10;
+  
+  --color-gap-muted: #555555;
+  --color-gap-muted-light: #6c757d;
+  
+  --color-gap-gray: #f5f6f8;
+  --color-gap-gray-smoke: #f2f2f2;
+  --color-gap-border: #e6e9ef;
+  --color-gap-border-dark: #c5c7d0;
+
+  --color-gap-status-gold: #f59e0b;
+  --color-gap-status-green: #10b981;
+
+  /* --- フォントファミリートークン --- */
+  --font-gap-sans: "GapSans-Regular", "heisei-kaku-gothic-std", "Helvetica Neue", Arial, sans-serif;
+  --font-gap-bold: "GapSans-Bold", "heisei-kaku-gothic-std", "Helvetica Neue", Arial, sans-serif;
+  --font-gap-mono: Menlo, Monaco, Consolas, "Courier New", monospace;
+
+  /* --- ブレイクポイント --- */
+  --breakpoint-sm: 544px;
+  --breakpoint-md: 769px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-2xl: 1400px;
+  --breakpoint-3xl: 1600px;
+}
+
+/* =================================================================
+   2. Dark / Light CSS変数定義（Gemini UI準拠パレット）
+   ================================================================= */
+/* デフォルト / Dark Mode */
+:root,
+[data-theme="dark"] {
+  --dls-canvas: #131314;               /* メイン背景 */
+  --dls-surface: #1e1f20;              /* サイドバー・カード背景 */
+  --dls-surface-elevated: #282a2c;     /* ホバー・選択状態 */
+  --dls-surface-container: #18191a;    /* コードブロック・内包コンテナ */
+  --dls-line-subtle: #333537;          /* 繊細な仕切り線 */
+  --dls-line-default: #444746;         /* コンテナ境界線 */
+  --dls-txt-primary: #ffffff;          /* 見出し・最重要テキスト */
+  --dls-txt-secondary: #f1f3f4;        /* 16px 本文テキスト */
+  --dls-txt-muted: #bdc1c6;            /* 14px 説明文・補足 */
+  --dls-txt-annotation: #9aa0a6;       /* 12px ラベル・メタ情報 */
+}
+
+/* Light Mode */
+[data-theme="light"] {
+  --dls-canvas: #ffffff;               /* 純白のメイン背景 */
+  --dls-surface: #f0f4f9;              /* Gemini特有のペールグレー */
+  --dls-surface-elevated: #ffffff;     /* カードの浮き */
+  --dls-surface-container: #e1e5ea;    /* コードブロック・内包コンテナ */
+  --dls-line-subtle: #e0e2e5;          /* ライトグレー仕切り線 */
+  --dls-line-default: #c4c7c5;         /* ライト境界線 */
+  --dls-txt-primary: #1f1f1f;          /* 濃いチャコールブラック見出し */
+  --dls-txt-secondary: #444746;        /* 視認性の高い本文 */
+  --dls-txt-muted: #5f6368;            /* サブテキスト */
+  --dls-txt-annotation: #747775;       /* ラベル・注記 */
+}
+
+/* =================================================================
+   3. セマンティック・ユーティリティクラス（確実に適用させるため直書き定義）
+   ================================================================= */
+.bg-dls-canvas            { background-color: var(--dls-canvas) !important; }
+.bg-dls-surface           { background-color: var(--dls-surface) !important; }
+.bg-dls-surface-elevated  { background-color: var(--dls-surface-elevated) !important; }
+.bg-dls-surface-container { background-color: var(--dls-surface-container) !important; }
+
+.border-dls-line-subtle   { border-color: var(--dls-line-subtle) !important; }
+.border-dls-line-default  { border-color: var(--dls-line-default) !important; }
+
+.text-dls-txt-primary     { color: var(--dls-txt-primary) !important; }
+.text-dls-txt-secondary   { color: var(--dls-txt-secondary) !important; }
+.text-dls-txt-muted       { color: var(--dls-txt-muted) !important; }
+.text-dls-txt-annotation  { color: var(--dls-txt-annotation) !important; }
+
+/* =================================================================
+   4. ベーススタイル（1rem = 10px 換算＆タイポグラフィ基盤）
+   ================================================================= */
+@layer base {
+  html {
+    font-size: 62.5%;
+  }
+
+  body {
+    background-color: var(--dls-canvas);
+    color: var(--dls-txt-secondary);
+    font-family: var(--font-gap-sans);
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0;
+    font-feature-settings: "palt" 1;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .h1, .h2, .h3, .h4, .h5, .h6,
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--dls-txt-primary);
+    font-family: var(--font-gap-bold);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-top: 0;
+    margin-bottom: 0.4rem;
+  }
+
+  .display-1 { font-size: 5.0rem; line-height: 1.1; }
+  .h1, h1    { font-size: 3.5rem; }
+  .h2, h2    { font-size: 2.8rem; }
+  .h3, h3    { font-size: 2.45rem; }
+  .h4, h4    { font-size: 2.1rem; }
+  .h5, h5    { font-size: 1.75rem; }
+  .h6, h6    { font-size: 1.4rem; }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* =================================================================
+   5. DLS 標準プリミティブボタンクラス
+   ================================================================= */
+.primary-btn {
+  background-color: var(--color-gap-red);
+  border: 0;
+  color: #ffffff;
+  font-family: var(--font-gap-bold);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: normal;
+  padding: 10px 16px 8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  text-decoration: none !important;
+  transition: opacity 0.2s;
+}
+
+.primary-btn:hover {
+  opacity: 0.9;
+}
+
+.primary-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.btn-inverted {
+  background-color: #ffffff;
+  border: 1px solid var(--color-gap-dark);
+  color: var(--color-gap-dark);
+  font-family: var(--font-gap-bold);
+  font-size: 1.3rem;
+  padding: 0.8rem 1.6rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  text-decoration: none !important;
+  transition: all 0.2s;
+}
+
+.btn-inverted:hover {
+  background-color: var(--color-gap-gray);
+}
+
+.btn-capsule {
+  background-color: #ffffff;
+  border: 1px solid var(--color-gap-border-dark);
+  border-radius: 9999px;
+  color: var(--color-gap-dark);
+  font-size: 1.4rem;
+  line-height: 2.4rem;
+  padding: 0.8rem 1.8rem;
+  position: relative;
+  text-decoration: none !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  transition: all 0.2s;
+}
+
+.btn-capsule:hover {
+  border-color: var(--color-gap-dark);
+}
+
+/* スクロールバー非表示用ユーティリティ */
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }

@@ -1,67 +1,179 @@
-import Image from "next/image";
+// app/page.tsx
+'use client';
 
-export default function Home() {
+import { useState } from 'react';
+import Sidebar, { NavigationSection } from '@/components/dls/Sidebar';
+import Header from '@/components/dls/Header';
+import HomeView from '@/components/dls/sections/HomeView';
+import GetStartedView from '@/components/dls/sections/GetStartedView'; // ★追加
+import TokensOverview from '@/components/dls/sections/TokensOverview';
+import TokensColor from '@/components/dls/sections/TokensColor';
+import TokensTypography from '@/components/dls/sections/TokensTypography';
+import TokensSpacing from '@/components/dls/sections/TokensSpacing';
+import TokensLayout from '@/components/dls/sections/TokensLayout';
+import TokensAspectRatio from '@/components/dls/sections/TokensAspectRatio';
+import TokensRadius from '@/components/dls/sections/TokensRadius';
+import TokensBreakpoints from '@/components/dls/sections/TokensBreakpoints';
+import TokensZIndex from '@/components/dls/sections/TokensZIndex';
+import TokensMotion from '@/components/dls/sections/TokensMotion';
+import TokensOpacity from '@/components/dls/sections/TokensOpacity';
+import TokensExport from '@/components/dls/sections/TokensExport';
+import ComponentButtons from '@/components/dls/sections/ComponentButtons';
+import ComponentBadges from '@/components/dls/sections/ComponentBadges';
+import ComponentSelectors from '@/components/dls/sections/ComponentSelectors';
+import ComponentCommercial from '@/components/dls/sections/ComponentCommercial';
+import ComponentProductCard from '@/components/dls/sections/ComponentProductCard';
+import ComponentApparelUtilities from '@/components/dls/sections/ComponentApparelUtilities';
+import ComponentPdpModules from '@/components/dls/sections/ComponentPdpModules';
+import ContractsView from '@/components/dls/sections/ContractsView';
+import PromptsView from '@/components/dls/sections/PromptsView';
+
+export default function DlsPortalPage() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [activeSection, setActiveSection] = useState<NavigationSection>('home');
+  const [viewportMode, setViewportMode] = useState<'desktop' | 'mobile'>('desktop');
+  const [cardTheme, setCardTheme] = useState<'dark' | 'light'>('dark');
+  const [isAvailable, setIsAvailable] = useState(true);
+
+  // ★全画面が実装完了したため、pendingSections は空配列に
+  const pendingSections: NavigationSection[] = [];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div
+      data-theme={cardTheme}
+      className="flex h-screen w-full bg-dls-canvas text-dls-txt-secondary overflow-hidden font-sans transition-colors duration-200"
+    >
+      {/* 1. Left Sidebar Navigation */}
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+        activeSection={activeSection}
+        setActiveSection={setActiveSection}
+        cardTheme={cardTheme}
+        setCardTheme={setCardTheme}
+      />
+
+      {/* 2. Main Workspace */}
+      <main className="flex-1 flex flex-col h-full overflow-hidden bg-dls-canvas transition-colors duration-200">
+        <Header
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+          activeSection={activeSection}
+          cardTheme={cardTheme}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+
+        <div className="flex-1 overflow-y-auto p-[20px] lg:p-[28px] bg-dls-canvas transition-colors duration-200">
+          
+          {/* =========================================================
+             0. Home & Onboarding
+             ========================================================= */}
+          {(activeSection === 'home' || activeSection === 'overview') && (
+            <HomeView setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'get-started' && (
+            <GetStartedView setActiveSection={setActiveSection} />
+          )}
+
+          {/* =========================================================
+             1. Design Tokens
+             ========================================================= */}
+          {activeSection === 'tokens' && (
+            <TokensOverview setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'tokens-color' && (
+            <TokensColor setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'tokens-typography' && (
+            <TokensTypography setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'tokens-spacing' && (
+            <TokensSpacing setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'tokens-layout' && (
+            <TokensLayout setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'tokens-aspect-ratio' && (
+            <TokensAspectRatio setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'tokens-radius' && (
+            <TokensRadius setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'tokens-z-index' && (
+            <TokensZIndex setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'tokens-motion' && (
+            <TokensMotion setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'tokens-opacity' && (
+            <TokensOpacity setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'tokens-breakpoints' && (
+            <TokensBreakpoints setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'tokens-export' && (
+            <TokensExport setActiveSection={setActiveSection} />
+          )}
+
+          {/* =========================================================
+             2. UI Components
+             ========================================================= */}
+          {activeSection === 'buttons' && (
+            <ComponentButtons setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'ui-badges' && (
+            <ComponentBadges setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'ui-selectors' && (
+            <ComponentSelectors setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'ui-commercial' && (
+            <ComponentCommercial setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'cards' && (
+            <ComponentProductCard
+              viewportMode={viewportMode}
+              cardTheme={cardTheme}
+              setCardTheme={setCardTheme}
+              isAvailable={isAvailable}
+              setIsAvailable={setIsAvailable}
+              setActiveSection={setActiveSection}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          )}
+
+          {activeSection === 'tryon' && (
+            <ComponentApparelUtilities setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'ui-pdp-modules' && (
+            <ComponentPdpModules setActiveSection={setActiveSection} />
+          )}
+
+          {/* =========================================================
+             3. Data & Enterprise AI
+             ========================================================= */}
+          {activeSection === 'contracts' && (
+            <ContractsView setActiveSection={setActiveSection} />
+          )}
+
+          {activeSection === 'prompts' && (
+            <PromptsView setActiveSection={setActiveSection} />
+          )}
         </div>
       </main>
     </div>
